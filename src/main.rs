@@ -3,10 +3,11 @@ use std::env;
 
 fn simple_print_file(filename: &str) {
     
-let contents = fs::read_to_string(filename)
-        .expect("rustcat: no such file or directory");
+    match fs::read_to_string(filename) {
+        Ok(contents) => print!("{}", contents),
+        Err(_) => println!("rustcat: {}: no such file or directory", filename),
+    }
 
-    print!("{}", contents);
 }
 fn main() {
     let args: Vec<String> = env::args().collect();
