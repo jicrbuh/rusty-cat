@@ -11,10 +11,13 @@ fn simple_print_file(filename: &str) {
 }
 fn main() {
     let args: Vec<String> = env::args().collect();
-
-    if args.len() != 2 {
-        println!("rustcat only supports printing the content of a single file right now");
+    println!("debug: args: {:?}", args);
+    //let filenames: Vec<String> = 
+    if args.len() < 2 {
+        println!("rustcat only supports printing the content of files right now");
         return;
     }
-    simple_print_file(&args[1]);
+    for filename in &args[1..] {
+        simple_print_file(filename);
+    }
 }
