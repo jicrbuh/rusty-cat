@@ -1,6 +1,10 @@
 use std::fs;
 use std::env;
+use std::fs::File;
+use std::io::{self, BufRead};
+use std::path::Path;
 
+#[allow(unused_must_use)] 
 fn simple_print_file(filename: &str) {
     
     match fs::read_to_string(filename) {
@@ -9,6 +13,28 @@ fn simple_print_file(filename: &str) {
     }
 
 }
+
+fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where P: AsRef<Path>, {
+    let file = File::open(filename)?;
+    Ok(io::BufReader::new(file).lines())
+}
+
+fn buffered_read_print(filename: &str) {
+    if let Ok(lines) = read_lines(filename) {
+        for line in lines {
+        match line {
+            Ok(line) => {
+                println!("{}", line)
+            },
+            Err(_) => {
+                println!("Unexpected error reading file.")
+                }
+            } 
+        }
+    }
+}
+
 fn main() {
     let args: Vec<String> = env::args().collect();
     println!("debug: args: {:?}", args);
@@ -18,6 +44,7 @@ fn main() {
         return;
     }
     for filename in &args[1..] {
-        simple_print_file(filename);
+        simple_print_file("fff");
+        buffered_read_print(filename); 
     }
 }
