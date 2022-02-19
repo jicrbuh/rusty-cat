@@ -4,10 +4,13 @@ use std::io::{self, BufRead};
 use std::path::Path;
 
 fn handle_stdin() {
-        let reader = io::stdin();
-    loop {
-        let line1 = reader.lock().lines().next().expect("").expect("");
-        println!("{}", line1);
+        let stdin = io::stdin();
+      for line in stdin.lock().lines() {
+        match line {
+            Err(_) => break,
+            Ok(s) => println!("{}", s),
+        }
+
     }
     
 }
