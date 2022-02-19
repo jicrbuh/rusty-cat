@@ -2,16 +2,33 @@ use std::env;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
-//use std::io;
 
 fn handle_stdin() {
     let reader = io::stdin();
     loop {
-        let line1 = reader.lock().lines().next().unwrap().unwrap();
-        println!("{}", line1); 
+        
+        let read_res = reader.lock().lines().next(); 
+        match read_res {
+            Ok(_) => {
+                let line = read_res.unwrap();
+                match line {
+                    Ok(_) => {
+                        println!("{}", line.unwrap())
+                    },
+                    Err(_) => {
+                        break;
+                    }
+                }
+            },
+            Err(_) => {
+                break;
+            }
+        }
+
     }
     
 }
+
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
 where P: AsRef<Path>, {
