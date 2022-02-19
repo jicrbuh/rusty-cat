@@ -1,26 +1,16 @@
-use std::fs;
 use std::env;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
-use std::io;
+//use std::io;
 
-// TODO: handle case of "rustcat > newfile"
-// either create or open a file, delete its content (maybe) and write to it using standard IO
-fn read_standard_io() -> io::Result<()> {
-    let mut buffer = String::new();
-    io::stdin().read_line(&mut buffer)?;
-    Ok(())
-}
-
-#[allow(unused_must_use)] 
-fn simple_print_file(filename: &str) {
-    
-    match fs::read_to_string(filename) {
-        Ok(contents) => print!("{}", contents),
-        Err(_) => println!("rustcat: {}: no such file or directory", filename),
+fn handle_stdin() {
+    let reader = io::stdin();
+    loop {
+        let line1 = reader.lock().lines().next().unwrap().unwrap();
+        println!("{}", line1); 
     }
-
+    
 }
 
 fn read_lines<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
@@ -46,14 +36,16 @@ fn buffered_read_print(filename: &str) {
 
 fn main() {
     let args: Vec<String> = env::args().collect();
-    println!("debug: args: {:?}", args);
-    //let filenames: Vec<String> = 
-    if args.len() < 2 {
-        println!("rustcat only supports printing the content of files right now");
-        return;
-    }
-    for filename in &args[1..] {
-        simple_print_file("fff");
-        buffered_read_print(filename); 
+    
+    if args.len() == 1 {
+
+        handle_stdin();
+    
+    } else {
+
+        for filename in &args[1..] {
+            buffered_read_print(filename); 
+        
+        }
     }
 }
