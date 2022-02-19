@@ -3,6 +3,15 @@ use std::env;
 use std::fs::File;
 use std::io::{self, BufRead};
 use std::path::Path;
+use std::io;
+
+// TODO: handle case of "rustcat > newfile"
+// either create or open a file, delete its content (maybe) and write to it using standard IO
+fn read_standard_io() -> io::Result<()> {
+    let mut buffer = String::new();
+    io::stdin().read_line(&mut buffer)?;
+    Ok(())
+}
 
 #[allow(unused_must_use)] 
 fn simple_print_file(filename: &str) {
